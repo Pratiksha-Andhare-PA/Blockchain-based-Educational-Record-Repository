@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@truffle/hdwallet-provider": "^1.7.0",
     "bootstrap": "^5.2.3",
     "dotenv": "^16.0.3",
     "html-react-parser": "^3.0.9",
@@ -14,7 +15,6 @@
     "react-router": "^6.8.1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "^5.0.1",
-    "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.8.2"
   },
   "engines": {

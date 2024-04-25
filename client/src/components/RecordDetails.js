@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ViewRecord from './ViewRecord';
-import { Link } from 'react-router';
 import EducationContract from "../contracts/EducationContract.json";
 import getWeb3 from "../utils/getWeb3";
 

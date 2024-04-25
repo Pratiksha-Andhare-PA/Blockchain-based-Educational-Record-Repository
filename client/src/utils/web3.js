@@ -1,6 +1,16 @@
 import Web3 from 'web3';
-//overrides metamask v0.2 for our v 1.0
-const web3 = new Web3(window.web3.currentProvider);
+import contractData from './contracts/EducationContract.json'; 
 
+const web3 = new Web3(window.ethereum || window.web3.currentProvider);
 
-export default web3;
+const abi = contractData.abi;
+const networkId = '3'; // This should match the network ID in your Truffle config for Ropsten
+const contractAddress = contractData.networks[networkId] && contractData.networks[networkId].address;
+
+if (!contractAddress) {
+  console.error("Contract not deployed on the detected network.");
+}
+
+const educationContract = new web3.eth.Contract(abi, contractAddress);
+
+export { web3, educationContract };
