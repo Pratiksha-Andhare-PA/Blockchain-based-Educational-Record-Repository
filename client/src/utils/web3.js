@@ -1,16 +1,27 @@
-import Web3 from 'web3';
-import contractData from './contracts/EducationContract.json'; 
+const Web3 = require('web3');
+const contract = require('./build/contracts/SimpleStorage.json');
 
-const web3 = new Web3(window.ethereum || window.web3.currentProvider);
+async function main() {
+    const web3 = new Web3('http://localhost:7545'); // Connect to the Ganache
+    const id = await web3.eth.net.getId();
+    const deployedNetwork = contract.networks[id];
+    const accounts = await web3.eth.getAccounts();
 
-const abi = contractData.abi;
-const networkId = '3'; // This should match the network ID in your Truffle config for Ropsten
-const contractAddress = contractData.networks[networkId] && contractData.networks[networkId].address;
+    const simpleStorage = new web3.eth.Contract(
+        contract.abi,
+        deployedNetwork.address,
+    );
 
-if (!contractAddress) {
-  console.error("Contract not deployed on the detected network.");
+    // Set data to the contract
+    const receipt = await simpleStorage.methods.set(123).send({ from: accounts[0], gas: 500000000 });
+    console.log('Transaction receipt:', receipt);
+
+    // Get data from the contract
+    const response = await simpleStorage.methods.get().call();
+    console.log('Stored data:', response);
 }
 
-const educationContract = new web3.eth.Contract(abi, contractAddress);
-
-export { web3, educationContract };
+main().then(() => process.exit(0)).catch(error => {
+    console.error('Error:', error);
+    process.exit(1);
+});
